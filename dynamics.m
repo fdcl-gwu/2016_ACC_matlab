@@ -1,0 +1,53 @@
+% 31 August 2015
+% ODE function for constrained attitude stabilization
+
+function [state_dot] = dynamics(t, state, constants)
+
+% constants
+m_sc = constants.m_sc;
+J = constants.J;
+gam = constants.gam;
+W = constants.W;
+
+% redefine the state vector
+R = reshape(state(1:9),3,3); % rotation matrix from body to inertial frame
+ang_vel = state(10:12);
+theta_est = state(13:15); % adaptive control term to estimate fixed disturbance
+
+% calculate external force and moment
+[~, m] = ext_force_moment(t,state,constants);
+
+[~, u_m, ~, ~, ~, ~, err_att, err_vel] ...
+    = controller(t,state,constants);
+
+% differential equations of motion
+
+R_dot = R*hat_map(ang_vel);
+ang_vel_dot =J \ ( m + u_m - cross(ang_vel,J*ang_vel));
+% theta_est_dot = gam * W' *(err_vel+err_att);
+theta_est_dot = gam * W' *(err_vel);
+% output the state derivative
+state_dot = [R_dot(:);ang_vel_dot; theta_est_dot];
+
+end
+
+function [f, m] = ext_force_moment(t,state, constants)
+
+% redefine the state vector
+R = reshape(state(1:9),3,3); % rotation matrix from body to inertial frame
+ang_vel = state(10:12);
+
+% constants
+m_sc = constants.m_sc;
+J = constants.J;
+W = constants.W;
+theta = constants.theta;
+
+% calculate external moment and force
+f = zeros(3,1);
+
+% add a constant disturbance
+% m = 3*mu/norm(pos)^3 * cross(R_body2lvlh'*a1_hat,J*R_body2lvlh'*a1_hat);
+m = zeros(3,1) + W*theta;
+end
+
