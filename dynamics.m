@@ -24,8 +24,8 @@ theta_est = state(13:15); % adaptive control term to estimate fixed disturbance
 
 R_dot = R*hat_map(ang_vel);
 ang_vel_dot =J \ ( m + u_m - cross(ang_vel,J*ang_vel));
-% theta_est_dot = gam * W' *(err_vel+err_att);
-theta_est_dot = gam * W' *(err_vel);
+theta_est_dot =  gam/2 * W' *(err_vel+ constants.kp/constants.kv * err_att);
+% theta_est_dot = gam * W' *(err_vel);
 % output the state derivative
 state_dot = [R_dot(:);ang_vel_dot; theta_est_dot];
 

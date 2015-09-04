@@ -13,13 +13,13 @@ addpath(genpath('./utilities'));
 constants.m_sc = 100;
 m_sc = constants.m_sc;
 
-% constants.J = [1.059e-2 -5.156e-6 2.361e-5;...
-%                 -5.156e-6 1.059e-2 -1.026e-5;
-%                 2.361e-5 -1.026e-5 1.005e-2];
+constants.J = [1.059e-2 -5.156e-6 2.361e-5;...
+                -5.156e-6 1.059e-2 -1.026e-5;
+                2.361e-5 -1.026e-5 1.005e-2];
 % % % from Farhad ASME paper
-constants.J = [ 5.5711 0.0618 -0.0251; ...
-                0.06177 5.5757 0.0101;...
-                -0.02502 0.01007 1.05053] * 1e-2;
+% constants.J = [ 5.5711 0.0618 -0.0251; ...
+%                 0.06177 5.5757 0.0101;...
+%                 -0.02502 0.01007 1.05053] * 1e-2;
 
 % constants.J = diag([694 572 360]);
 
@@ -51,16 +51,16 @@ constants.num_con = size(constants.con,2);
 % constants.kp = 0.0424; % wn^2
 % constants.kp = 0.4;
 % constants.kv = 0.296; % 2*zeta*wn 
-% constants.kp = 0.1;
-% constants.kv = 0.296; % 2*zeta*wn 
-constants.kp = 0.7;
-constants.kv = 0.12;
+constants.kp = 0.4;
+constants.kv = 0.296; % 2*zeta*wn 
+% constants.kp = 0.7;
+% constants.kv = 0.12;
 
 % disturbance terms
 constants.W = eye(3,3);
 % constants.theta = zeros(3,1);
-constants.theta = [0.03;-0.06;0.09];
-constants.gam = 1; % adaptive controller gain term (rate of convergence)
+constants.theta = [0.1;0.1;0.1];
+constants.gam = 4; % adaptive controller gain term (rate of convergence)
 
 % define the initial state of rigid body
 % pick a random euler angle sequence that satisfies the constraints
@@ -69,7 +69,7 @@ constants.q0 = [-0.188 -0.735 -0.450 -0.471];
 % constants.qd = [-0.59 0.67 0.21 -0.38]; % from lee/meshbahi paper
 constants.qd = [0 0 0 1];
 
-R0 = ROT2(0*pi/180)*ROT3(180*pi/180);
+R0 = ROT2(20*pi/180)*ROT3(175*pi/180);
 w0 = zeros(3,1); % initial angular velocity
 theta_est0 = zeros(3,1); 
 initial_state = [R0(:);w0; theta_est0];
@@ -111,6 +111,3 @@ end
 
 plot_outputs
 
-% draw the earth
-
-% draw the orbit
