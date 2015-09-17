@@ -42,7 +42,7 @@ con = [0 0;...
        0 0];
 constants.con_angle = [10;10]*pi/180;
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
-constants.alpha = 20; % use the same alpha for each one
+constants.alpha = 10; % use the same alpha for each one
 constants.num_con = size(constants.con,2);
 % zeta = 0.7;
 % wn = 0.2;
@@ -53,6 +53,7 @@ constants.num_con = size(constants.con,2);
 % constants.kv = 0.296; % 2*zeta*wn 
 constants.kp = 0.4;
 constants.kv = 0.296; % 2*zeta*wn 
+constants.c = 0.1;
 % constants.kp = 0.7;
 % constants.kv = 0.12;
 
@@ -77,7 +78,7 @@ initial_state = [R0(:);w0; theta_est0];
 constants.R0 = R0;
 constants.Rd = eye(3,3);
 % simulation timespan
-tspan = linspace(0,20,1e3);
+tspan = linspace(0,20,1000);
 
 % propogate a chief and deputy spacecraft (continuous time system)
 [t, state] = ode45(@(t,state)dynamics(t,state,constants),tspan, initial_state);

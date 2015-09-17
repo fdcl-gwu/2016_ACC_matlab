@@ -1,8 +1,6 @@
 % 11 June 15
 % controller 
 
-
-
 function [u_f, u_m, R_des, ang_vel_des, ang_vel_dot_des, Psi, err_att, err_vel] ...
     = controller(t,state, constants)
 
