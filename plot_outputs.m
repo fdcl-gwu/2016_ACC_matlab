@@ -1,7 +1,14 @@
 % 11 June 15
 % plot data
 close all
+num_figs = 7;
+fig_handle = zeros(num_figs,1);
+for ii = 1:num_figs
+    fig_handle(ii) = figure;
+end
 
+fontsize = 18;
+fontname = 'Times';
 % % plot the position
 % figure
 % 
@@ -25,117 +32,137 @@ close all
 % plot(t,pos(:,3));
 
 % plot the attitude error vector
-figure % attitude error vector
+set(0, 'CurrentFigure', fig_handle(1)) % attitude error vector
 subplot(3,1,1)
-title('Attitude error vector','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{R1}$','interpreter','latex')
+title('Attitude error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(1,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{R2}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(2,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,3)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{R3}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(3,:));
 
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
 % plot the attitude error \Psi
-figure % \Psi
-title('$\Psi$ error ','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$\Psi$','interpreter','latex')
+set(0, 'CurrentFigure', fig_handle(2)) % \Psi
+title('$\Psi$ error ','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Psi$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,Psi);
 
-
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % plot the angular velocity error
-figure 
+set(0, 'CurrentFigure', fig_handle(3)) 
 subplot(3,1,1)
-title('Angular velocity error vector','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{\Omega_1}$','interpreter','latex')
+title('Angular velocity error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{\Omega_1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_vel(1,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{\Omega_2}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{\Omega_2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_vel(2,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,3)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$e_{\Omega_3}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{\Omega_3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_vel(3,:));
 
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
 % plot the control input
-figure 
+set(0, 'CurrentFigure', fig_handle(4))
 subplot(3,1,1)
-title('Control Input','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$u_{1}$','interpreter','latex')
+title('Control Input','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$u_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,u_m(1,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$u_{2}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$u_{2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,u_m(2,:));
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,3)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$u_{3}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$u_{3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,u_m(3,:));
 
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
 % plot the desired adn actual angular velocities
-figure
+set(0, 'CurrentFigure', fig_handle(5))
 
 subplot(3,1,1)
-title('Angular Velocity','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$\Omega_{1}$','interpreter','latex')
+title('Angular Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,ang_vel(:,1),'b');
 plot(t,ang_vel_des(1,:),'r');
 l=legend('Actual','Desired');
 set(l,'interpreter','latex')
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$\Omega_{2}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,ang_vel(:,2),'b');
 plot(t,ang_vel_des(2,:),'r');
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,3)
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$\Omega_{3}$','interpreter','latex')
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,ang_vel(:,3),'b');
 plot(t,ang_vel_des(3,:),'r');
 
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
 % plot the disturbance estimate
-figure
+set(0, 'CurrentFigure', fig_handle(6))
 hold all
 grid on
-title('$\hat{\theta}$','interpreter','latex')
-xlabel('$t (sec)$','interpreter','latex')
-ylabel('$\theta$','interpreter','latex')
+title('$\hat{\theta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\theta$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 plot(t,theta_est);
+
+set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % plot attitude on unit sphere
 % create a sphere
-h_fig=figure('color','w');
+set(0, 'CurrentFigure', fig_handle(7))
+set(fig_handle(7),'Color','w');
+
 hold all
 
 [sph.x, sph.y, sph.z]=sphere(100);

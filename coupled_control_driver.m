@@ -10,12 +10,17 @@ restoredefaultpath
 addpath(genpath('./utilities'));
 
 % define constants/properties of rigid body
-constants.m_sc = 100;
+constants.m_sc = 1;
 m_sc = constants.m_sc;
 
-constants.J = [1.059e-2 -5.156e-6 2.361e-5;...
-                -5.156e-6 1.059e-2 -1.026e-5;
-                2.361e-5 -1.026e-5 1.005e-2];
+% constants.J = [1.059e-2 -5.156e-6 2.361e-5;...
+%                 -5.156e-6 1.059e-2 -1.026e-5;
+%                 2.361e-5 -1.026e-5 1.005e-2];
+% Chris's Hexrotor inertia matrix
+constants.J = [55710.50413e-7 ,  617.6577e-7   , -250.2846e-7 ;...
+               617.6577e-7    ,  55757.4605e-7 , 100.6760e-7 ;...
+               -250.2846e-7  ,  100.6760e-7   , 105053.7595e-7];
+                    
 % % % from Farhad ASME paper
 % constants.J = [ 5.5711 0.0618 -0.0251; ...
 %                 0.06177 5.5757 0.0101;...
@@ -37,12 +42,12 @@ constants.sen = [1;0;0]; % body fixed frame
 % con = [0.174    0   -0.853 -0.122;...
 %     -0.934   0.7071 -0.236 -0.140;...
 %     -0.034   0.7071 -0.286 -0.983];
-con = [0 0;...
-      1 -1;...
-       0 0];
-constants.con_angle = [10;10]*pi/180;
+constants.avoid_switch = 'false';
+con = [0;1;0];
+
+constants.con_angle = 20*pi/180;
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
-constants.alpha = 10; % use the same alpha for each one
+constants.alpha = 20; % use the same alpha for each one
 constants.num_con = size(constants.con,2);
 % zeta = 0.7;
 % wn = 0.2;
@@ -58,9 +63,9 @@ constants.c = 0.1;
 % constants.kv = 0.12;
 
 % disturbance terms
+constants.dist_switch = 'false';
 constants.W = eye(3,3);
-% constants.theta = zeros(3,1);
-constants.theta = [0.1;0.1;0.1];
+constants.theta = [0;0;0];
 constants.gam = 4; % adaptive controller gain term (rate of convergence)
 
 % define the initial state of rigid body
@@ -70,7 +75,7 @@ constants.q0 = [-0.188 -0.735 -0.450 -0.471];
 % constants.qd = [-0.59 0.67 0.21 -0.38]; % from lee/meshbahi paper
 constants.qd = [0 0 0 1];
 
-R0 = ROT2(20*pi/180)*ROT3(175*pi/180);
+R0 = ROT3(170*pi/180);
 w0 = zeros(3,1); % initial angular velocity
 theta_est0 = zeros(3,1); 
 initial_state = [R0(:);w0; theta_est0];

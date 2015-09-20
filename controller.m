@@ -26,27 +26,32 @@ W = constants.W;
 % attitude error function
 % Psi = 1/2*trace(G*(eye(3,3)-R_des'*R));
 % rotate body vector to inertial frame
-
-sen_inertial = R * sen;
-
 psi_attract = 1/2*trace(G*(eye(3,3)-R_des'*R));
-
-% loop over the constraints and form a bunch of repelling function
-psi_avoid = zeros(constants.num_con,1);
-dB = zeros(3,constants.num_con);
-for ii = 1:constants.num_con
-
-        % calculate error function
-        psi_avoid(ii) = -1/alpha*log(-((dot(sen_inertial,con(:,ii))-cos(con_angle(ii)))/(1+cos(con_angle(ii)))));
-
-        dB(:,ii) = -1/alpha/(-dot(sen_inertial,con(:,ii))+cos(con_angle(ii)))*hat_map(R'*con(:,ii))*sen;
-end
-
-Psi = psi_attract*(sum(psi_avoid)+1);
-
 dA = 1/2*vee_map(G*R_des'*R - R'*R_des*G);
 
-err_att = dA*(sum(psi_avoid)+1) + sum(dB.*psi_attract,2);
+switch constants.avoid_switch
+    case 'true' % add the avoidance term
+        sen_inertial = R * sen;
+        
+        % loop over the constraints and form a bunch of repelling function
+        psi_avoid = zeros(constants.num_con,1);
+        dB = zeros(3,constants.num_con);
+        for ii = 1:constants.num_con
+            
+            % calculate error function
+            psi_avoid(ii) = -1/alpha*log((cos(con_angle(ii))-dot(sen_inertial,con(:,ii)))/(1+cos(con_angle(ii))));
+            
+            dB(:,ii) = 1/alpha/(dot(sen_inertial,con(:,ii))-cos(con_angle(ii)))*hat_map(R'*con(:,ii))*sen;
+        end
+        
+        Psi = psi_attract*(sum(psi_avoid)+1);
+        
+        err_att = dA*(sum(psi_avoid)+1) + sum(dB.*psi_attract,2);
+        
+    case 'false'
+        err_att = dA;
+        Psi = psi_attract;
+end
 
 err_vel = ang_vel - R'*R_des*ang_vel_des;
 
@@ -55,8 +60,13 @@ alpha_d = -hat_map(ang_vel)*R'*R_des*ang_vel_des + R'*R_des*ang_vel_dot_des;
 % compute the control input
 u_f = zeros(3,1);
 % u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) + J*alpha_d - W * theta_est;
-u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * theta_est;
-% u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel);
+switch constants.dist_switch
+    case 'true'
+        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * theta_est;
+    case 'false'
+        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel);
+end
+
 end
 
 function [R_des, ang_vel_des, ang_vel_dot_des] = des_attitude(t,constants)

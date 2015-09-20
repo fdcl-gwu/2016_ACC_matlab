@@ -49,6 +49,11 @@ f = zeros(3,1);
 
 % add a constant disturbance
 % m = 3*mu/norm(pos)^3 * cross(R_body2lvlh'*a1_hat,J*R_body2lvlh'*a1_hat);
-m = zeros(3,1) + W*theta;
+switch constants.dist_switch
+    case 'true'
+        m = zeros(3,1) + W*theta;
+    case 'false'
+        m = zeros(3,1);
+end
 end
 
