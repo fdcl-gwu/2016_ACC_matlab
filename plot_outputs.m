@@ -151,9 +151,9 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 set(0, 'CurrentFigure', fig_handle(6))
 hold all
 grid on
-title('$\hat{\theta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+title('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$\theta$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 plot(t,theta_est);
 
 set(gca,'FontName',fontname,'FontSize',fontsize);
@@ -205,7 +205,7 @@ set(h_cyl,'Linestyle','none',...
     'FaceLighting','gouraud','AmbientStrength',0.5,...
     'Facealpha',1,'Facecolor','red');
 
-light('Position',[0 0 100],'Style','local');
+light('Position',[0 0 100],'Style','infinite');
 material dull;
 axis equal;
 axis off

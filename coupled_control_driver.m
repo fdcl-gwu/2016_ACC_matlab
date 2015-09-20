@@ -34,18 +34,21 @@ J = constants.J;
 constants.G = diag([0.9 1 1.1]);
 constants.sen = [1;0;0]; % body fixed frame
 % define a number of constraints to avoid
-
+constants.avoid_switch = 'false';
 % con = -1+2.*rand(3,constants.num_con); % inertial frame vectors (3XN)
 % con = [0.174    0   -0.853 -0.122;...
 %     -0.934   0.7071    0.436 -0.140;...
 %     -0.034   0.7071   -0.286 -0.983];
-% con = [0.174    0   -0.853 -0.122;...
-%     -0.934   0.7071 -0.236 -0.140;...
-%     -0.034   0.7071 -0.286 -0.983];
-constants.avoid_switch = 'false';
-con = [0;1;0];
+% column vectors to define constraints
+% con = [0    0   0 0;...
+%        1   -1   0 0;...
+%        0   0   1 -1];
+% 
+% constants.con_angle = [20;20;30;40]*pi/180;
 
+con = [0;1;0];
 constants.con_angle = 20*pi/180;
+
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 constants.alpha = 20; % use the same alpha for each one
 constants.num_con = size(constants.con,2);
@@ -63,9 +66,9 @@ constants.c = 0.1;
 % constants.kv = 0.12;
 
 % disturbance terms
-constants.dist_switch = 'false';
+constants.dist_switch = 'true';
 constants.W = eye(3,3);
-constants.theta = [0;0;0];
+constants.theta = [0.03;0.06;0.09];
 constants.gam = 4; % adaptive controller gain term (rate of convergence)
 
 % define the initial state of rigid body
