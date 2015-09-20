@@ -1,9 +1,9 @@
 % 31 August 2015
 % driver for constrained attitude control 
 
-% clear all
+clear all
 clc
-% close all
+close all
 
 % add path to utilities
 restoredefaultpath
@@ -34,20 +34,21 @@ J = constants.J;
 constants.G = diag([0.9 1 1.1]);
 constants.sen = [1;0;0]; % body fixed frame
 % define a number of constraints to avoid
-constants.avoid_switch = 'false';
+constants.avoid_switch = 'true';
 % con = -1+2.*rand(3,constants.num_con); % inertial frame vectors (3XN)
+% from [1] U. Lee and M. Mesbahi. Spacecraft Reorientation in Presence of Attitude Constraints via Logarithmic Barrier Potentials. In 2011 AMERICAN CONTROL CONFERENCE, Proceedings of the American Control Conference, pages 450?455, 345 E 47TH ST, NEW YORK, NY 10017 USA, 2011. Boeing; Bosch; Corning; Eaton; GE Global Res; Honeywell; Lockheed Martin; MathWorks; Natl Instruments; NT-MDT; United Technol, IEEE. American Control Conference (ACC), San Fransisco, CA, JUN 29-JUL 01, 2011.
 % con = [0.174    0   -0.853 -0.122;...
 %     -0.934   0.7071    0.436 -0.140;...
 %     -0.034   0.7071   -0.286 -0.983];
 % column vectors to define constraints
-% con = [0    0   0 0;...
-%        1   -1   0 0;...
-%        0   0   1 -1];
-% 
-% constants.con_angle = [20;20;30;40]*pi/180;
+con = [0.174    0.4   -0.853 -0.122;...
+    -0.934   0.7071    0.436 -0.140;...
+    -0.034   0.7071   -0.286 -0.983];
 
-con = [0;1;0];
-constants.con_angle = 20*pi/180;
+constants.con_angle = [40;40;40;20]*pi/180;
+
+% con = [0;1;0];
+% constants.con_angle = 20*pi/180;
 
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 constants.alpha = 20; % use the same alpha for each one
@@ -78,13 +79,17 @@ constants.q0 = [-0.188 -0.735 -0.450 -0.471];
 % constants.qd = [-0.59 0.67 0.21 -0.38]; % from lee/meshbahi paper
 constants.qd = [0 0 0 1];
 
-R0 = ROT3(170*pi/180);
-w0 = zeros(3,1); % initial angular velocity
-theta_est0 = zeros(3,1); 
-initial_state = [R0(:);w0; theta_est0];
-
-constants.R0 = R0;
+constants.R0 = ROT1(5*pi/180)*ROT3(225*pi/180);
 constants.Rd = eye(3,3);
+% constants.R0 = quat2dcm(constants.q0)';
+% constants.Rd = quat2dcm(constants.qd)';
+
+R0 = constants.R0;
+w0 = zeros(3,1);
+theta_est0 = zeros(3,1); 
+initial_state = [constants.R0(:);w0; theta_est0];
+
+
 % simulation timespan
 tspan = linspace(0,20,1000);
 

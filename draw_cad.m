@@ -82,7 +82,8 @@ sen_inertial_end = constants.Rd*constants.sen;
 plot3(sen_inertial_start(1),sen_inertial_start(2),sen_inertial_start(3),'go','markersize',10,'linewidth',2)
 plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersize',10,'linewidth',2)
 
-view(-180,30)
+% view(-180,30)
+view(55,30);
 f = getframe;
 [im,map] = rgb2ind(f.cdata,256,'nodither');
    
@@ -100,7 +101,7 @@ for ii = 1:10:length(tspan)
    frame = getframe(1);
     im = frame2im(frame);
     [imind,cm] = rgb2ind(im,256);
-    outfile = 'sc_noavoid_dist.gif';
+    outfile = 'sc_avoid_mult.gif';
  
     % On the first loop, create the file. In subsequent loops, append.
     if ii==1
