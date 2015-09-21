@@ -41,14 +41,14 @@ constants.avoid_switch = 'true';
 %     -0.934   0.7071    0.436 -0.140;...
 %     -0.034   0.7071   -0.286 -0.983];
 % column vectors to define constraints
-con = [0.174    0.4   -0.853 -0.122;...
-    -0.934   0.7071    0.436 -0.140;...
-    -0.034   0.7071   -0.286 -0.983];
+% con = [0.174    0.4   -0.853 -0.122;...
+%     -0.934   0.7071    0.436 -0.140;...
+%     -0.034   0.7071   -0.286 -0.983];
+% 
+% constants.con_angle = [40;40;40;20]*pi/180;
 
-constants.con_angle = [40;40;40;20]*pi/180;
-
-% con = [0;1;0];
-% constants.con_angle = 20*pi/180;
+con = [-1;0;0];
+constants.con_angle = 20*pi/180;
 
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 constants.alpha = 20; % use the same alpha for each one
@@ -79,7 +79,7 @@ constants.q0 = [-0.188 -0.735 -0.450 -0.471];
 % constants.qd = [-0.59 0.67 0.21 -0.38]; % from lee/meshbahi paper
 constants.qd = [0 0 0 1];
 
-constants.R0 = ROT1(5*pi/180)*ROT3(225*pi/180);
+constants.R0 = ROT1(0*pi/180)*ROT3(90*pi/180);
 constants.Rd = eye(3,3);
 % constants.R0 = quat2dcm(constants.q0)';
 % constants.Rd = quat2dcm(constants.qd)';
