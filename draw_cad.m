@@ -1,6 +1,7 @@
 % 11 September 2015
 % script to test and animate motion
 
+function [] = draw_cad(filename,type)
 close all
 
 % load model
@@ -31,9 +32,9 @@ for ii = 1:constants.num_con
     elseif sum(constants.con(:,ii) == [0;0;-1]) == 3
         dcm = ROT1(pi);
     else
-    k_hat = cross([0;0;1],constants.con(:,ii));
-    angle = acos(dot([0;0;1],constants.con(:,ii)));
-    dcm = eye(3,3) + hat_map(k_hat) + hat_map(k_hat)*hat_map(k_hat)*(1-cos(angle))/sin(angle)^2;
+        k_hat = cross([0;0;1],constants.con(:,ii));
+        angle = acos(dot([0;0;1],constants.con(:,ii)));
+        dcm = eye(3,3) + hat_map(k_hat) + hat_map(k_hat)*hat_map(k_hat)*(1-cos(angle))/sin(angle)^2;
     end
     
     cyl_open = dcm*[cyl.x(2,:);cyl.y(2,:);cyl.z(2,:)];
@@ -74,7 +75,7 @@ line([0 0],[0 0],[0 1],'color','k','linewidth',3);
 sen_inertial = zeros(length(tspan),3);
 
 for ii = 1:length(tspan)
-   sen_inertial(ii,:) = (R_b2i(:,:,ii)*constants.sen)'; 
+    sen_inertial(ii,:) = (R_b2i(:,:,ii)*constants.sen)';
 end
 sen_inertial_start = constants.R0*constants.sen;
 sen_inertial_end = constants.Rd*constants.sen;
@@ -86,37 +87,46 @@ plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersi
 view(55,30);
 f = getframe;
 [im,map] = rgb2ind(f.cdata,256,'nodither');
-   
+
 % line([0 boresight(1)],[0 boresight(2)],[0 boresight(3)],'color','k','linewidth',3);
 for ii = 1:10:length(tspan)
-   
-   nTV = TV *R_b2i(:,:,ii)'; 
-   
-   set(tcs,'Vertices',nTV);
-   
-   bore_handle = line([0 sen_inertial(ii,1)],[0 sen_inertial(ii,2)],[0 sen_inertial(ii,3)],'color','k','linewidth',3);
-   plot3(sen_inertial(1:ii,1),sen_inertial(1:ii,2),sen_inertial(1:ii,3),'b','linewidth',3);
-   
-   drawnow
-   frame = getframe(1);
-    im = frame2im(frame);
-    [imind,cm] = rgb2ind(im,256);
-    outfile = 'sc_avoid_mult.gif';
- 
-    % On the first loop, create the file. In subsequent loops, append.
-    if ii==1
-        imwrite(imind,cm,outfile,'gif','DelayTime',0,'loopcount',inf);
-    else
-        imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
+    
+    nTV = TV *R_b2i(:,:,ii)';
+    
+    set(tcs,'Vertices',nTV);
+    
+    bore_handle = line([0 sen_inertial(ii,1)],[0 sen_inertial(ii,2)],[0 sen_inertial(ii,3)],'color','k','linewidth',3);
+    plot3(sen_inertial(1:ii,1),sen_inertial(1:ii,2),sen_inertial(1:ii,3),'b','linewidth',3);
+    
+    drawnow
+    switch type
+        case 'gif'
+            frame = getframe(1);
+            im = frame2im(frame);
+            [imind,cm] = rgb2ind(im,256);
+            
+            
+            % On the first loop, create the file. In subsequent loops, append.
+            if ii==1
+                imwrite(imind,cm,filename,'gif','DelayTime',0,'loopcount',inf);
+            else
+                imwrite(imind,cm,filename,'gif','DelayTime',0,'writemode','append');
+            end
+        case 'movie'
+            M(i)=getframe(gcf); % leaving gcf out crops the frame in the movie.
+        otherwise
+            
+            
     end
-
-%    M(i)=getframe(gcf); % leaving gcf out crops the frame in the movie.
-
-   
-   delete(bore_handle)
+    delete(bore_handle)
 end
 
 
 % Output the movie as an avi file
-% movie2avi(M,'WaveMovie.avi');
+switch type
+    case 'movie'
+        movie2avi(M,'WaveMovie.avi');
+    otherwise
+        
+end
 

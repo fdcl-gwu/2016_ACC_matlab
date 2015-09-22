@@ -7,7 +7,7 @@ function [u_f, u_m, R_des, ang_vel_des, ang_vel_dot_des, Psi, err_att, err_vel] 
 % redefine the state vector
 R = reshape(state(1:9),3,3); % rotation matrix from body to inertial frame
 ang_vel = state(10:12);
-theta_est = state(13:15);
+delta_est = state(13:15);
 
 % extract out constants
 J = constants.J;
@@ -62,7 +62,7 @@ u_f = zeros(3,1);
 % u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) + J*alpha_d - W * theta_est;
 switch constants.dist_switch
     case 'true'
-        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * theta_est;
+        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * delta_est;
     case 'false'
         u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel);
 end

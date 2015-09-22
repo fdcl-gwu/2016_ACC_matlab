@@ -1,4 +1,7 @@
 % 4 September 2015
+% This is using $ \bar{e}_\Omega $ and is more complicated and probalby
+% incorrect
+
 close all
 clc
 
