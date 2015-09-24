@@ -3,6 +3,7 @@
 
 constants.avoid_switch = 'true';
 constants.dist_switch = 'true';
+constants.adaptive_switch = 'true';
 
 % define constants/properties of rigid body
 constants.m_sc = 1;
@@ -60,17 +61,17 @@ constants.kv = 0.296; % 2*zeta*wn
 constants.sen = [1;0;0]; % body fixed frame
 % define a number of constraints to avoids
 
-% con = [0.174    0.4   -0.853 -0.122;...
-%     -0.934   0.7071    0.436 -0.140;...
-%     -0.034   0.7071   -0.286 -0.983];
-% constants.con_angle = [40;40;40;20]*pi/180;
+con = [0.174    0.4   -0.853 -0.122;...
+    -0.934   0.7071    0.436 -0.140;...
+    -0.034   0.7071   -0.286 -0.983];
+constants.con_angle = [40;40;40;20]*pi/180;
 
-con = [0;1;0];
-constants.con_angle = 10*pi/180;
+% con = [1/sqrt(2);1/sqrt(2);0];
+% constants.con_angle = 15*pi/180;
 
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 
-constants.alpha = 20; % use the same alpha for each one
+constants.alpha = 15; % use the same alpha for each one
 constants.num_con = size(constants.con,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,8 +80,8 @@ constants.num_con = size(constants.con,2);
 % disturbance terms
 
 constants.W = eye(3,3);
-constants.delta = [0.03;0.06;0.09];
-constants.kd = 5; % adaptive controller gain term (rate of convergence)
+constants.delta = [0.06;0.06;0.09];
+constants.kd = 0.5; % adaptive controller gain term (rate of convergence)
 constants.c = 1; % input the bound on C here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DESIRED/INITIAL CONDITION
@@ -96,11 +97,11 @@ constants.qd = [0 0 0 1];
 % constants.R0 = quat2dcm(constants.q0)';
 % constants.Rd = quat2dcm(constants.qd)';
 
-constants.R0 = ROT1(0*pi/180)*ROT3(170*pi/180); % avoid single constraint
-constants.Rd = eye(3,3);
+% constants.R0 = ROT1(0*pi/180)*ROT3(90*pi/180); % avoid single constraint
+% constants.Rd = ROT3(0*pi/180);
 
-% constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
-% constants.Rd = eye(3,3);
+constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
+constants.Rd = eye(3,3);
 
 
 R0 = constants.R0;
@@ -109,4 +110,4 @@ delta_est0 = zeros(3,1);
 initial_state = [constants.R0(:);w0; delta_est0];
 
 % simulation timespan
-tspan = linspace(0,20,1000);
+tspan = linspace(0,10,1000);

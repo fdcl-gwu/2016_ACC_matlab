@@ -1,7 +1,8 @@
 % 11 September 2015
 % script to test and animate motion
 
-function [] = draw_cad(filename,type)
+filename = 'constrained';
+type = 'none';
 close all
 
 % load model
@@ -83,11 +84,13 @@ sen_inertial_end = constants.Rd*constants.sen;
 plot3(sen_inertial_start(1),sen_inertial_start(2),sen_inertial_start(3),'go','markersize',10,'linewidth',2)
 plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersize',10,'linewidth',2)
 
+
 % view(-180,30)
-view(55,30);
+view(50,30);
 f = getframe;
 [im,map] = rgb2ind(f.cdata,256,'nodither');
-
+M(1:length(tspan))= struct('cdata',[],'colormap',[]);
+hold on
 % line([0 boresight(1)],[0 boresight(2)],[0 boresight(3)],'color','k','linewidth',3);
 for ii = 1:10:length(tspan)
     
@@ -101,19 +104,20 @@ for ii = 1:10:length(tspan)
     drawnow
     switch type
         case 'gif'
+            
             frame = getframe(1);
             im = frame2im(frame);
             [imind,cm] = rgb2ind(im,256);
-            
+            outfile = [filename '.gif'];
             
             % On the first loop, create the file. In subsequent loops, append.
             if ii==1
-                imwrite(imind,cm,filename,'gif','DelayTime',0,'loopcount',inf);
+                imwrite(imind,cm,outfile,'gif','DelayTime',0,'loopcount',inf);
             else
-                imwrite(imind,cm,filename,'gif','DelayTime',0,'writemode','append');
+                imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
             end
         case 'movie'
-            M(i)=getframe(gcf); % leaving gcf out crops the frame in the movie.
+            M(ii)=getframe(gcf); % leaving gcf out crops the frame in the movie.
         otherwise
             
             
@@ -124,8 +128,11 @@ end
 
 % Output the movie as an avi file
 switch type
+    case 'gif'
+        
+        
     case 'movie'
-        movie2avi(M,'WaveMovie.avi');
+        movie2avi(M,[filename '.avi'],'FPS',30,'compression','none');
     otherwise
         
 end

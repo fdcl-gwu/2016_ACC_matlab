@@ -60,7 +60,7 @@ alpha_d = -hat_map(ang_vel)*R'*R_des*ang_vel_des + R'*R_des*ang_vel_dot_des;
 % compute the control input
 u_f = zeros(3,1);
 % u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) + J*alpha_d - W * theta_est;
-switch constants.dist_switch
+switch constants.adaptive_switch
     case 'true'
         u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * delta_est;
     case 'false'

@@ -34,23 +34,23 @@ fontname = 'Times';
 % plot the attitude error vector
 set(0, 'CurrentFigure', fig_handle(1)) % attitude error vector
 subplot(3,1,1)
-title('Attitude error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('Attitude error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$e_{R1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R_1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(1,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$e_{R2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R_2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(2,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,3)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$e_{R3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$e_{R_3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(3,:));
 
@@ -58,7 +58,7 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % plot the attitude error \Psi
 set(0, 'CurrentFigure', fig_handle(2)) % \Psi
-title('$\Psi$ error ','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('$\Psi$ error ','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\Psi$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
@@ -69,7 +69,7 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 % plot the angular velocity error
 set(0, 'CurrentFigure', fig_handle(3)) 
 subplot(3,1,1)
-title('Angular velocity error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('Angular velocity error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$e_{\Omega_1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
@@ -94,7 +94,7 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 % plot the control input
 set(0, 'CurrentFigure', fig_handle(4))
 subplot(3,1,1)
-title('Control Input','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('Control Input','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$u_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
@@ -120,7 +120,7 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 set(0, 'CurrentFigure', fig_handle(5))
 
 subplot(3,1,1)
-title('Angular Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('Angular Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\Omega_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
@@ -151,10 +151,10 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 set(0, 'CurrentFigure', fig_handle(6))
 hold all
 grid on
-title('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% title('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-plot(t,theta_est);
+plot(t,delta_est);
 
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
@@ -203,7 +203,7 @@ set(h_sph,'LineStyle','none','FaceColor',0.8*[1 1 1],...
     'Facealpha',0.3,'Facecolor',[0.8 0.8 0.8]);
 set(h_cyl,'Linestyle','none',...
     'FaceLighting','gouraud','AmbientStrength',0.5,...
-    'Facealpha',1,'Facecolor','red');
+    'Facealpha',0.5,'Facecolor','red');
 
 light('Position',[0 0 100],'Style','infinite');
 material dull;

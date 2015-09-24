@@ -30,7 +30,7 @@ err_att = zeros(3,length(tspan));
 err_vel = zeros(3,length(tspan));
 
 ang_vel = state(:,10:12);
-theta_est = state(:,13:15);
+delta_est = state(:,13:15);
 for ii = 1:length(tspan)
    R_b2i(:,:,ii) = reshape(state(ii,1:9),3,3); 
 
@@ -39,6 +39,6 @@ for ii = 1:length(tspan)
 end
 
 
-plot_outputs
+% plot_outputs
 
-% draw_cad(filename,type)
+draw_cad
