@@ -213,16 +213,16 @@ xlabel('x')
 ylabel('y')
 zlabel('z')
 % convert the body fixed vector to the inertial frame
-sen_inertial = zeros(length(tspan),3);
+sen_inertial = zeros(length(t),3);
 
-for ii = 1:length(tspan)
+for ii = 1:length(t)
    sen_inertial(ii,:) = (R_b2i(:,:,ii)*constants.sen)'; 
 end
 sen_inertial_start = constants.R0*constants.sen;
 sen_inertial_end = constants.Rd*constants.sen;
 % plot path of body vector in inertial frame
-plot3(sen_inertial_start(1),sen_inertial_start(2),sen_inertial_start(3),'go','markersize',10,'linewidth',2)
-plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersize',10,'linewidth',2)
+% plot3(sen_inertial_start(1),sen_inertial_start(2),sen_inertial_start(3),'go','markersize',10,'linewidth',2)
+% plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersize',10,'linewidth',2)
 plot3(sen_inertial(:,1),sen_inertial(:,2),sen_inertial(:,3),'b','linewidth',3)
 
 % plot inertial frame

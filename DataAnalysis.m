@@ -2,7 +2,7 @@ close all;
 clear all;
 clc
 
-t_start_test = 0;
+t_start_test =20 ;
 
 % Format from C-Code:
 %{
@@ -114,8 +114,7 @@ t_IMU = t_IMU-t_start_test;
 t_end_test = max([t, t_IMU]);
 
 
-
-load_constants
+load_experiment_constants
 tspan = t;
 % save states into variable consistent with simulation
 R_b2i = zeros(3,3,length(t));
@@ -141,8 +140,19 @@ for ii = 1:length(t)
    [u_f(:,ii), u_m(:,ii), R_des(:,:,ii), ang_vel_des(:,ii), ang_vel_dot_des(:,ii), Psi(ii), err_att(:,ii), err_vel(:,ii)] ...
     = controller(t(ii),state_curr, constants);
 end
+
+% adjust the data based on the start time (remove all values before 0)
+index = t>=0;
+t = t(index);
+R_b2i = R_b2i(:,:,index);
+R_des = R_des(:,:,index);
+ang_vel = ang_vel(:,index);
+u_m = u_m(:,index);
+Psi = Psi(index);
+err_att = err_att(:,index);
+err_vel = err_vel(:,index);
 % use simulation plotting tools to plot
-plot_outputs
+plot_experiment_outputs
 
 % % Plotting
 % set(0,'DefaultAxesFontSize',12);
