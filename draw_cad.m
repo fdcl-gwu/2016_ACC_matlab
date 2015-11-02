@@ -1,7 +1,7 @@
 % 11 September 2015
 % script to test and animate motion
 
-filename = 'constrained';
+filename = 'single_constraint';
 type = 'none';
 close all
 
@@ -12,7 +12,7 @@ load('TacSAT.mat');
 TV = 1/300*[TV(:,1) TV(:,2) TV(:,3)]*ROT2(pi/2)';
 boresight = constants.sen;
 % set up the figure window
-figure('color','w')
+figure('color','w','units','normalized','outerposition',[0 0 1 1])
 hold all
 
 [sph.x, sph.y, sph.z]=sphere(100);
@@ -86,10 +86,19 @@ plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersi
 
 
 % view(-180,30)
-view(50,30);
+view(140,30);
+switch type
+    case 'gif'
 f = getframe;
 [im,map] = rgb2ind(f.cdata,256,'nodither');
-M(1:length(tspan))= struct('cdata',[],'colormap',[]);
+    case 'movie'
+%         M(1:length(tspan))= struct('cdata',[],'colormap',[]);
+    nFrames = length(tspan);
+    vidObj = VideoWriter([filename '.avi']);
+    vidObj.Quality = 100;
+    vidObj.FrameRate = 8;
+    open(vidObj);
+end
 hold on
 % line([0 boresight(1)],[0 boresight(2)],[0 boresight(3)],'color','k','linewidth',3);
 for ii = 1:10:length(tspan)
@@ -117,7 +126,8 @@ for ii = 1:10:length(tspan)
                 imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
             end
         case 'movie'
-            M(ii)=getframe(gcf); % leaving gcf out crops the frame in the movie.
+%             M(ii)=getframe(gcf,[0 0 560 420]); % leaving gcf out crops the frame in the movie.
+            writeVideo(vidObj,getframe(gca));
         otherwise
             
             
@@ -132,7 +142,9 @@ switch type
         
         
     case 'movie'
-        movie2avi(M,[filename '.avi'],'FPS',30,'compression','none');
+%         movie2avi(M,[filename '.avi']);
+    close(vidObj);
+    
     otherwise
         
 end

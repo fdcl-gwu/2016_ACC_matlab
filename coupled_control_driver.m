@@ -39,6 +39,6 @@ for ii = 1:length(tspan)
 end
 
 
-% plot_outputs
+plot_outputs
 
-draw_cad
+% draw_cad

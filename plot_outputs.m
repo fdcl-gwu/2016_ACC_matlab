@@ -117,44 +117,44 @@ plot(t,u_m(3,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % plot the desired adn actual angular velocities
-% set(0, 'CurrentFigure', fig_handle(5))
-% 
-% subplot(3,1,1)
-% title('Angular Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% ylabel('$\Omega_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% grid on;hold on
-% plot(t,ang_vel(:,1),'b');
-% plot(t,ang_vel_des(1,:),'r');
-% l=legend('Actual','Desired');
-% set(l,'interpreter','latex')
-% set(gca,'FontName',fontname,'FontSize',fontsize);
-% 
-% subplot(3,1,2)
-% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% ylabel('$\Omega_{2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% grid on;hold on
-% plot(t,ang_vel(:,2),'b');
-% plot(t,ang_vel_des(2,:),'r');
-% set(gca,'FontName',fontname,'FontSize',fontsize);
-% 
-% subplot(3,1,3)
-% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% ylabel('$\Omega_{3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% grid on;hold on
-% plot(t,ang_vel(:,3),'b');
-% plot(t,ang_vel_des(3,:),'r');
-% 
-% set(gca,'FontName',fontname,'FontSize',fontsize);
+set(0, 'CurrentFigure', fig_handle(5))
 
-% % plot the disturbance estimate
-% set(0, 'CurrentFigure', fig_handle(6))
-% hold all
-% grid on
-% % title('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% ylabel('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-% plot(t,delta_est);
+subplot(3,1,1)
+title('Angular Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+grid on;hold on
+plot(t,ang_vel(:,1),'b');
+plot(t,ang_vel_des(1,:),'r');
+l=legend('Actual','Desired');
+set(l,'interpreter','latex')
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
+subplot(3,1,2)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+grid on;hold on
+plot(t,ang_vel(:,2),'b');
+plot(t,ang_vel_des(2,:),'r');
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
+subplot(3,1,3)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\Omega_{3}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+grid on;hold on
+plot(t,ang_vel(:,3),'b');
+plot(t,ang_vel_des(3,:),'r');
+
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
+% plot the disturbance estimate
+set(0, 'CurrentFigure', fig_handle(6))
+hold all
+grid on
+% title('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\bar{\Delta}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+plot(t,delta_est);
 
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
