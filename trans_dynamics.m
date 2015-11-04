@@ -1,13 +1,13 @@
 function [state_dot] = trans_dynamics(t,state,constants)
 % extract out the state
-pos = state(1:2);
-vel = state(3:4);
+pos = state(1:3);
+vel = state(4:6);
 
 % constants
 m_sc = constants.m_sc;
 xd = constants.xd;
 xo = constants.xo;
-veld = zeros(2,1);
+veld = zeros(3,1);
 
 P = constants.P;
 N = constants.N;
@@ -21,10 +21,10 @@ f_ext = zeros(3,1);
 
 % compute the control
 dA = P*(pos-xd);
-dR = -alpha/beta*exp(-(pos-xo)'*N*(pos-xo)/beta)*N*(pos-xo);
+dR = -alpha*exp(-(pos-xo)'*inv(N)*(pos-xo))*inv(N)*(pos-xo);
 
 A = 1/2*(pos-xd)'*P*(pos-xd);
-R = 1+alpha/2*exp(-(pos-xo)'*N*(pos-xo)/beta);
+R = 1+alpha/2*exp(-(pos-xo)'*inv(N)*(pos-xo));
 
 err_pos = dA*R + dR*A;
 err_vel = vel - veld;
