@@ -10,14 +10,16 @@ kd = constants.kd;
 W = constants.W;
 
 % redefine the state vector
-R = reshape(state(1:9),3,3); % rotation matrix from body to inertial frame
-ang_vel = state(10:12);
-delta_est = state(13:15); % adaptive control term to estimate fixed disturbance
+pos = state(1:3);
+vel = state(4:6);
+R = reshape(state(7:15),3,3); % rotation matrix from body to inertial frame
+ang_vel = state(16:18);
+delta_est = state(19:21); % adaptive control term to estimate fixed disturbance
 
 % calculate external force and moment
 [~, m] = ext_force_moment(t,state,constants);
 
-[~, u_m, ~, ~, ~, ~, err_att, err_vel] ...
+[u_f, u_m, ~, ~, ~, ~, err_att, err_vel] ...
     = controller(t,state,constants);
 
 % differential equations of motion
@@ -28,7 +30,10 @@ ang_vel_dot =J \ ( m + u_m - cross(ang_vel,J*ang_vel));
 % theta_est_dot =  gam/2 * W' *(err_vel+ (constants.c + constants.kp/constants.kv)* err_att);
 theta_est_dot = kd * W' *(err_vel + constants.c*err_att);
 % output the state derivative
-state_dot = [R_dot(:);ang_vel_dot; theta_est_dot];
+pos_dot = vel;
+vel_dot = u_f/m_sc;
+
+state_dot = [pos_dot;vel_dot;R_dot(:);ang_vel_dot; theta_est_dot];
 
 end
 

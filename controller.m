@@ -1,24 +1,45 @@
 % 11 June 15
 % controller 
 
-function [u_f, u_m, R_des, ang_vel_des, ang_vel_dot_des, Psi, err_att, err_vel] ...
+function [u_f, u_m, R_des, ang_vel_des, ang_vel_dot_des, Psi, err_att, err_ang_vel] ...
     = controller(t,state, constants)
 
 % redefine the state vector
-R = reshape(state(1:9),3,3); % rotation matrix from body to inertial frame
-ang_vel = state(10:12);
-delta_est = state(13:15);
+pos = state(1:3);
+vel = state(4:6);
+R = reshape(state(7:15),3,3); % rotation matrix from body to inertial frame
+ang_vel = state(16:18);
+delta_est = state(19:21); % adaptive control term to estimate fixed disturbance
 
 % extract out constants
 J = constants.J;
 G = constants.G;
-kp = constants.kp;
-kv = constants.kv;
+kr = constants.kp;
+kw = constants.kw;
 sen = constants.sen;
 alpha = constants.alpha;
 con_angle = constants.con_angle;
 con = constants.con;
 W = constants.W;
+
+% position
+xd = constants.xd;
+xo = constants.xo;
+veld = constants.vd;
+
+det_shell = constants.det_shell; % detection shell radius
+
+P = constants.P;
+N = constants.N;
+alpha_pos = constants.alpha_pos;
+beta = constants.beta;
+
+kx = constants.kx;
+kv = constants.kv;
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ATTITUDE CONTROL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % desired attitude
 [R_des, ang_vel_des, ang_vel_dot_des] = des_attitude(t,constants);
@@ -53,20 +74,53 @@ switch constants.avoid_switch
         Psi = psi_attract;
 end
 
-err_vel = ang_vel - R'*R_des*ang_vel_des;
+err_ang_vel = ang_vel - R'*R_des*ang_vel_des;
 
 alpha_d = -hat_map(ang_vel)*R'*R_des*ang_vel_des + R'*R_des*ang_vel_dot_des;
 
 % compute the control input
-u_f = zeros(3,1);
+
 % u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) + J*alpha_d - W * theta_est;
 switch constants.adaptive_switch
     case 'true'
-        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel) -W * delta_est;
+        u_m = -kr*err_att - kw*err_ang_vel + cross(ang_vel,J*ang_vel) -W * delta_est;
     case 'false'
-        u_m = -kp*err_att - kv*err_vel + cross(ang_vel,J*ang_vel);
+        u_m = -kr*err_att - kw*err_ang_vel + cross(ang_vel,J*ang_vel);
 end
 
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% POSITION CONTROL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% compute the control
+dA_pos = P*(pos-xd);
+dR_pos = -alpha_pos*exp(-(pos-xo)'*inv(N)*(pos-xo))*inv(N)*(pos-xo);
+
+A = 1/2*(pos-xd)'*P*(pos-xd);
+R = 1+alpha_pos/2*exp(-(pos-xo)'*inv(N)*(pos-xo));
+
+err_pos = dA_pos*R + dR_pos*A;
+err_vel = vel - veld;
+% u = -kx*err_pos - kv*err_vel;
+%% Gyroscopic force to avoid obstacle
+% compute distance to obstacle
+dist_obs = xo - pos;
+
+% check if we are within the detection shell
+S = zeros(3,3);
+if norm(dist_obs) < (det_shell + beta)
+    % decide on direction to rotate
+    vec = hat_map(dist_obs)*vel;
+
+    if norm(vec) > 1e-6
+        S = hat_map(vec);
+    else
+        S = hat_map([1 1 1]);
+    end
+
+end
+
+u_f = -kx*err_pos - kv*err_vel + 1/2*norm(constants.initial_state(1:3)-xd)^2*S*vel;
+% u_f = zeros(3,1);
 end
 
 function [R_des, ang_vel_des, ang_vel_dot_des] = des_attitude(t,constants)

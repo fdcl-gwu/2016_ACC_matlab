@@ -33,25 +33,24 @@ J = constants.J;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONTROLLER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% controller parameters
+% attitude controller parameters
 constants.G = diag([0.9 1 1.1]);
 
-% con = -1+2.*rand(3,constants.num_con); % inertial frame vectors (3XN)
-% from [1] U. Lee and M. Mesbahi. Spacecraft Reorientation in Presence of Attitude Constraints via Logarithmic Barrier Potentials. In 2011 AMERICAN CONTROL CONFERENCE, Proceedings of the American Control Conference, pages 450?455, 345 E 47TH ST, NEW YORK, NY 10017 USA, 2011. Boeing; Bosch; Corning; Eaton; GE Global Res; Honeywell; Lockheed Martin; MathWorks; Natl Instruments; NT-MDT; United Technol, IEEE. American Control Conference (ACC), San Fransisco, CA, JUN 29-JUL 01, 2011.
-% con = [0.174    0   -0.853 -0.122;...
-%     -0.934   0.7071    0.436 -0.140;...
-%     -0.034   0.7071   -0.286 -0.983];
-% column vectors to define constraints
-% zeta = 0.7;
-% wn = 0.2;
-% constants.kp = wn^2;
-% constants.zeta = 2*zeta*wn;
-% constants.kp = 0.0424; % wn^2
-% constants.kp = 0.4;
-% constants.kv = 0.296; % 2*zeta*wn 
 constants.kp = 0.4;
-constants.kv = 0.296; % 2*zeta*wn 
+constants.kw = 0.296; % 2*zeta*wn 
 
+% position controller parameters
+constants.alpha_pos = 5; % scale factor
+constants.beta = 1; % std dev
+constants.N = diag(constants.beta*ones(1,3));
+constants.P = eye(3,3);
+constants.det_shell = 1;
+
+wn = 4;
+zeta = 0.7;
+
+constants.kx = constants.m_sc*2*zeta*wn;
+constants.kv = constants.m_sc*wn^2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONSTRAINT
@@ -59,7 +58,7 @@ constants.kv = 0.296; % 2*zeta*wn
 
 
 constants.sen = [1;0;0]; % body fixed frame
-% define a number of constraints to avoids
+% define a number of attitude constraints to avoids
 % 
 con = [0.174    0.4   -0.853 -0.122;...
     -0.934   0.7071    0.436 -0.140;...
@@ -74,6 +73,11 @@ constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 constants.alpha = 15; % use the same alpha for each one
 constants.num_con = size(constants.con,2);
 
+% position constraint
+constants.xo = [5 ;...
+      5;...
+      0 ]; % obstacles are the column vectors
+constants.num_obs = size(constants.xo,2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADAPTIVE CONTROL FOR DISTURBANCE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,6 +92,12 @@ constants.c = 1; % input the bound on C here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % define the initial state of rigid body
+constants.x0 = [10;10;0];
+constants.v0 = zeros(3,1);
+
+% desired position state
+constants.xd = zeros(3,1);
+constants.vd = zeros(3,1);
 
 % R0 = ROT1(0*pi/180)*ROT2(45*pi/180)*ROT3(180*pi/180);
 constants.q0 = [-0.188 -0.735 -0.450 -0.471];
@@ -107,7 +117,7 @@ constants.Rd = eye(3,3);
 R0 = constants.R0;
 w0 = zeros(3,1);
 delta_est0 = zeros(3,1); 
-initial_state = [constants.R0(:);w0; delta_est0];
+initial_state = [constants.x0;constants.v0;constants.R0(:);w0; delta_est0];
 
 % simulation timespan
-tspan = linspace(0,10,1000);
+tspan = linspace(0,30,100);

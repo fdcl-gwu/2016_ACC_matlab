@@ -49,7 +49,7 @@ if norm(dist_obs) < (det_shell + beta)
 
 end
 
-u = -kx*err_pos - kv*err_vel + 1/2*norm(constants.initial_state(1:3)-xd)^2*S*vel;
+u = -kx*err_pos - kv*err_vel + 1/2*norm(constants.initial_state(1:3)-xd)^2*S*vel
 %% state update derivatives
 pos_dot = vel;
 vel_dot = u/m_sc;

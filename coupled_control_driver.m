@@ -1,7 +1,6 @@
-% 31 August 2015
-% driver for constrained attitude control 
+% 11 November 2015
+% combinining translation and rotational control into a single function
 
-clear all
 clc
 close all
 
@@ -11,7 +10,7 @@ addpath(genpath('./utilities'));
 
 load_constants
 
-% propogate a chief and deputy spacecraft (continuous time system)
+% propogate full actuated rigid body
 [t, state] = ode45(@(t,state)dynamics(t,state,constants),tspan, initial_state);
 % calculate the relative position and attitude of deputy wrt chief
 
@@ -29,10 +28,13 @@ Psi = zeros(length(tspan),1);
 err_att = zeros(3,length(tspan));
 err_vel = zeros(3,length(tspan));
 
-ang_vel = state(:,10:12);
-delta_est = state(:,13:15);
+pos = state(:,1:3);
+vel = state(:,4:6);
+
+ang_vel = state(:,16:18);
+delta_est = state(:,19:21);
 for ii = 1:length(tspan)
-   R_b2i(:,:,ii) = reshape(state(ii,1:9),3,3); 
+   R_b2i(:,:,ii) = reshape(state(ii,7:15),3,3); 
 
    [u_f(:,ii), u_m(:,ii), R_des(:,:,ii), ang_vel_des(:,ii), ang_vel_dot_des(:,ii), Psi(ii), err_att(:,ii), err_vel(:,ii)] ...
     = controller(t(ii),state(ii,:)', constants);
