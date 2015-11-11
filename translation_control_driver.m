@@ -1,10 +1,11 @@
 % 3 November 2015
 % simulate translational obstacle avoidance
 
-clear all
 clc
 close all
 
+restoredefaultpath
+addpath(genpath('./utilities'))
 % define initial condition
 x0 = [10;10;0];
 % desired state
@@ -17,8 +18,8 @@ num_obs = size(constants.xo,2);
 
 constants.m_sc = 1;
 %% error function parameters
-constants.alpha = 1; % scale factor
-constants.beta = 0.8; % std dev
+constants.alpha = 5; % scale factor
+constants.beta = 1; % std dev
 constants.N = diag(constants.beta*ones(1,3));
 constants.P = eye(3,3);
 
@@ -29,7 +30,9 @@ constants.kx = constants.m_sc*2*zeta*wn;
 constants.kv = constants.m_sc*wn^2;
 
 % simulate system
-initial_state = [x0;zeros(3,1)];
+initial_state = [x0;0;0;0];
+constants.initial_state = initial_state;
+
 tspan = linspace(0,30,100);
 [t, state] = ode45(@(t,state)trans_dynamics(t,state,constants),tspan, initial_state);
 % plot outputs
