@@ -2,7 +2,7 @@
 % load constants for simulation
 
 constants.avoid_switch = 'true';
-constants.dist_switch = 'true';
+constants.dist_switch = 'false';
 constants.adaptive_switch = 'true';
 
 % define constants/properties of rigid body
@@ -60,13 +60,13 @@ constants.kv = constants.m_sc*wn^2;
 constants.sen = [1;0;0]; % body fixed frame
 % define a number of attitude constraints to avoids
 % 
-con = [0.174    0.4   -0.853 -0.122;...
-    -0.934   0.7071    0.436 -0.140;...
-    -0.034   0.7071   -0.286 -0.983];
-constants.con_angle = [40;40;40;20]*pi/180;
+% con = [0.174    0.4   -0.853 -0.122;...
+%     -0.934   0.7071    0.436 -0.140;...
+%     -0.034   0.7071   -0.286 -0.983];
+% constants.con_angle = [40;40;40;20]*pi/180;
 
-% con = [1/sqrt(2);1/sqrt(2);0];
-% constants.con_angle = 12*pi/180;
+con = [1/sqrt(2);1/sqrt(2);0];
+constants.con_angle = 12*pi/180;
 
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 
@@ -92,7 +92,7 @@ constants.c = 1; % input the bound on C here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % define the initial state of rigid body
-constants.x0 = [10;10;0];
+constants.x0 = [8;8;0];
 constants.v0 = zeros(3,1);
 
 % desired position state
@@ -110,14 +110,16 @@ constants.qd = [0 0 0 1];
 % constants.R0 = ROT1(0*pi/180)*ROT3(0*pi/180); % avoid single constraint
 % constants.Rd = ROT3(90*pi/180);
 
-constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
+% constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
+constants.R0 = ROT3(pi);
 constants.Rd = eye(3,3);
 
 
 R0 = constants.R0;
 w0 = zeros(3,1);
 delta_est0 = zeros(3,1); 
-initial_state = [constants.x0;constants.v0;constants.R0(:);w0; delta_est0];
+constants.initial_state = [constants.x0;constants.v0;constants.R0(:);w0; delta_est0];
+initial_state = constants.initial_state;
 
 % simulation timespan
 tspan = linspace(0,30,100);

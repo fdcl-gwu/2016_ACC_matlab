@@ -98,7 +98,8 @@ dR_pos = -alpha_pos*exp(-(pos-xo)'*inv(N)*(pos-xo))*inv(N)*(pos-xo);
 A = 1/2*(pos-xd)'*P*(pos-xd);
 R = 1+alpha_pos/2*exp(-(pos-xo)'*inv(N)*(pos-xo));
 
-err_pos = dA_pos*R + dR_pos*A;
+% err_pos = dA_pos*R + dR_pos*A;
+err_pos = dA_pos;
 err_vel = vel - veld;
 % u = -kx*err_pos - kv*err_vel;
 %% Gyroscopic force to avoid obstacle
@@ -109,12 +110,12 @@ dist_obs = xo - pos;
 S = zeros(3,3);
 if norm(dist_obs) < (det_shell + beta)
     % decide on direction to rotate
-    vec = hat_map(dist_obs)*vel;
+    vec = hat_map(dist_obs/norm(dist_obs))*vel/norm(vel);
 
     if norm(vec) > 1e-6
         S = hat_map(vec);
     else
-        S = hat_map([1 1 1]);
+        S = hat_map([1 1 1]/norm([1 1 1]));
     end
 
 end

@@ -1,7 +1,7 @@
 % 11 June 15
 % plot data
 close all
-num_figs = 9;
+num_figs = 10;
 fig_handle = zeros(num_figs,1);
 for ii = 1:num_figs
     fig_handle(ii) = figure;
@@ -17,14 +17,14 @@ set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
 
 subplot(3,1,1)
 title('Position','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$x $','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,pos(:,1));
 
 subplot(3,1,2)
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$y$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% ylabel('$y$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,pos(:,2));
 
@@ -40,13 +40,13 @@ set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
 
 subplot(3,1,1)
 title('Velocity','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\dot{x}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,vel(:,1));
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\dot{y}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,vel(:,2));
@@ -63,14 +63,14 @@ set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
 
 subplot(3,1,1)
 % title('Attitude error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$e_{R_1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(1,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$e_{R_2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_att(2,:));
@@ -102,14 +102,14 @@ set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
 
 subplot(3,1,1)
 % title('Angular velocity error vector','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$e_{\Omega_1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_vel(1,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$e_{\Omega_2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,err_vel(2,:));
@@ -129,14 +129,14 @@ set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
 
 subplot(3,1,1)
 % title('Control Input','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$u_{1}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,u_m(1,:));
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(3,1,2)
-xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$u_{2}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on;hold on
 plot(t,u_m(2,:));
@@ -270,3 +270,38 @@ line([0 1],[0 0],[0 0],'color','k','linewidth',3);
 line([0 0],[0 1],[0 0],'color','k','linewidth',3);
 line([0 0],[0 0],[0 1],'color','k','linewidth',3);
 view(3)
+
+% plot the translation of the vehicle
+
+fig_index = fig_index+1;
+set(0, 'CurrentFigure', fig_handle(fig_index)) % attitude error vector
+
+hold all
+grid on
+title('Position','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('x','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('y','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+zlabel('z','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+axis equal
+
+% plot the obstacle as a ellipsoid
+plot_gaussian_ellipsoid(constants.xo, constants.N);
+
+body_x0 = [1;0;0];
+body_y0 = [0;1;0];
+body_z0 = [0;0;1];
+
+plot3(pos(:,1),pos(:,2),pos(:,3));
+
+for ii = 1:length(t)
+    % rotate using the direction cosine matrix
+    body_x = R_b2i(:,:,ii)*body_x0;
+    body_y = R_b2i(:,:,ii)*body_y0;
+    body_z = R_b2i(:,:,ii)*body_z0;
+    % translate at each time step to the current position
+    % draw axes centered at the body
+    line([pos(ii,1) pos(ii,1)+body_x(1)],[pos(ii,2) pos(ii,2)+body_x(2)],[pos(ii,3) pos(ii,3)+body_x(3)],'color','r','linewidth',3);
+    line([pos(ii,1) pos(ii,1)+body_y(1)],[pos(ii,2) pos(ii,2)+body_y(2)],[pos(ii,3) pos(ii,3)+body_y(3)],'color','g','linewidth',3);
+    line([pos(ii,1) pos(ii,1)+body_z(1)],[pos(ii,2) pos(ii,2)+body_z(2)],[pos(ii,3) pos(ii,3)+body_z(3)],'color','b','linewidth',3);
+    
+end
