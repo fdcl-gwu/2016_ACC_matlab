@@ -2,6 +2,10 @@
 close all
 clc
 clear all
+
+fontsize = 18;
+fontname = 'Times';
+
 con_angle = cos(10*pi/180); % angular constraint
 angle = -1:1e-8:con_angle; % dot product
 x = 0:0.001:1;
@@ -14,7 +18,7 @@ con = con/norm(con);
 R_des = eye(3,3);
 G = diag([0.9 1 1.1]);
 % cylindrical projection of attitude ROT3(lon)*ROT2(lat)
-den = 100;
+den = 50;
 lon = linspace(-180,180,den)*pi/180;
 lat = linspace(-90, 90, den)*pi/180;
 
@@ -64,44 +68,49 @@ g = 1+-1/alpha*log(-(angle-con_angle)/(1+con_angle));
 
 figure(1)
 plot(acos(angle)*180/pi, real(g))
-xlabel('Angle to constraint','interpreter','latex')
-ylabel('Barrier','interpreter','latex')
-title('Logarithmic Barrier Function','interpreter','latex')
+xlabel('Angle to constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('Barrier','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+title('Logarithmic Barrier Function','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on
 hold all
 
 figure
 hold all
 grid on
-title('Sensor Inertial Pointing Direction','interpreter','latex')
+title('Sensor Inertial Pointing Direction','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 plot3(sen_array(1,:),sen_array(2,:), sen_array(3,:),'b.')
 % quiver3(sen_array(1,:),sen_array(2,:),sen_array(3,:),er_attract_array(1,:),er_attract_array(2,:),er_attract_array(3,:),2);
 line([0 con(1)],[0 con(2)],[0 con(3)],'color','red','linewidth',10);
-xlabel('X','interpreter','latex')
-ylabel('Y','interpreter','latex')
-zlabel('Z','interpreter','latex')
+xlabel('X','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('Y','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+zlabel('Z','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 
 figure
 hold all
 grid on
-title('Avoid','interpreter','latex')
-xlabel('Longitude','interpreter','latex')
-ylabel('Latitude','interpreter','latex')
+title('Avoid','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 surf(X.*180/pi,Y.*180/pi,(psi_avoid_array))
-
+axis([-180 180 -90 90 0 3])
+view(3)
 
 figure
 hold all
 grid on
-title('Attract','interpreter','latex')
-xlabel('Longitude','interpreter','latex')
-ylabel('Latitude','interpreter','latex')
+title('Attract','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 surf(X.*180/pi,Y.*180/pi,psi_attract_array)
+axis([-180 180 -90 90 0 3])
+view(3)
 
 figure
 hold all
 grid on
-title('Total','interpreter','latex')
-xlabel('Longitude','interpreter','latex')
-ylabel('Latitude','interpreter','latex')
+title('Total','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 surf(X.*180/pi,Y.*180/pi,psi_total_array)
+axis([-180 180 -90 90 0 3])
+view(3)
