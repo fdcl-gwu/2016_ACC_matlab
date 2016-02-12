@@ -249,6 +249,6 @@ for ii = 1:constants.num_con
 end
 
 xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$$\cos^{-1}(r^T R^T v_i)$$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('arc$$\cos \,(r^T R^T v_i)$$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 
 set(gca,'FontName',fontname,'FontSize',fontsize);
