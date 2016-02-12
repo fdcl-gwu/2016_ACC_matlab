@@ -1,7 +1,7 @@
 % 11 June 15
 % plot data
 close all
-num_figs = 7;
+num_figs = 8;
 fig_handle = zeros(num_figs,1);
 for ii = 1:num_figs
     fig_handle(ii) = figure;
@@ -230,3 +230,25 @@ line([0 1],[0 0],[0 0],'color','k','linewidth',3);
 line([0 0],[0 1],[0 0],'color','k','linewidth',3);
 line([0 0],[0 0],[0 1],'color','k','linewidth',3);
 view(3)
+
+% plot the angle to each constraint
+
+% calculate the angle to each constraint
+ang_con = zeros(length(tspan),constants.num_con);
+
+for ii = 1:length(tspan)
+    for jj = 1:constants.num_con
+       ang_con(ii,jj) = 180/pi*acos(dot(sen_inertial(ii,:),constants.con(:,jj)));
+    end
+end
+set(0, 'CurrentFigure', fig_handle(8))
+grid on
+hold all
+for ii = 1:constants.num_con
+    plot(t,ang_con(:,ii))
+end
+
+xlabel('$t (sec)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$$\cos^{-1}(r^T R^T v_i)$$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+
+set(gca,'FontName',fontname,'FontSize',fontsize);
