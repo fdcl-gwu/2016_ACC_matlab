@@ -1,8 +1,8 @@
 % 11 September 2015
 % script to test and animate motion
 
-filename = 'single_constraint';
-type = 'none';
+filename = constants.filename;
+type = constants.animation_type;
 close all
 
 % load model
@@ -84,9 +84,10 @@ sen_inertial_end = constants.Rd*constants.sen;
 plot3(sen_inertial_start(1),sen_inertial_start(2),sen_inertial_start(3),'go','markersize',10,'linewidth',2)
 plot3(sen_inertial_end(1),sen_inertial_end(2),sen_inertial_end(3),'gx','markersize',10,'linewidth',2)
 
+% pause to allow user to adjust the graphics window
+fprintf('\nADJUST THE VIEW IN THE FIGURE WINDOW\n\n')
+keyboard;
 
-% view(-180,30)
-view(140,30);
 switch type
     case 'gif'
 f = getframe;
@@ -148,4 +149,7 @@ switch type
     otherwise
         
 end
+
+fprintf('\nFINISHED ANIMATION\n\n')
+fprintf('\nLOOK FOR %s in current directory\n\n', filename)
 
