@@ -1,9 +1,14 @@
 % 22 September 2015
 % load constants for simulation
 
+constants.scenario = 'multiple'; % or 'single'
 constants.avoid_switch = 'true';
 constants.dist_switch = 'true';
 constants.adaptive_switch = 'true';
+
+% constants for plotting/animations
+constants.animation_type = 'gif'; % or 'movie' or 'none'
+constants.filename = 'multiple_avoid';
 
 % define constants/properties of rigid body
 constants.m_sc = 1;
@@ -57,18 +62,19 @@ constants.kv = 0.296; % 2*zeta*wn
 % CONSTRAINT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 constants.sen = [1;0;0]; % body fixed frame
 % define a number of constraints to avoids
-% 
-con = [0.174    0.4   -0.853 -0.122;...
-    -0.934   0.7071    0.436 -0.140;...
-    -0.034   0.7071   -0.286 -0.983];
-constants.con_angle = [40;40;40;20]*pi/180;
 
-% con = [1/sqrt(2);1/sqrt(2);0];
-% constants.con_angle = 12*pi/180;
-
+switch constants.scenario
+    case 'multiple'
+        con = [0.174    0.4   -0.853 -0.122;...
+            -0.934   0.7071    0.436 -0.140;...
+            -0.034   0.7071   -0.286 -0.983];
+        constants.con_angle = [40;40;40;20]*pi/180;
+    case 'single'
+        con = [1/sqrt(2);1/sqrt(2);0];
+        constants.con_angle = 12*pi/180;
+end
 constants.con = con./repmat(sqrt(sum(con.^2,1)),3,1); % normalize
 
 constants.alpha = 15; % use the same alpha for each one
@@ -97,11 +103,17 @@ constants.qd = [0 0 0 1];
 % constants.R0 = quat2dcm(constants.q0)';
 % constants.Rd = quat2dcm(constants.qd)';
 
-% constants.R0 = ROT1(0*pi/180)*ROT3(0*pi/180); % avoid single constraint
-% constants.Rd = ROT3(90*pi/180);
+switch constants.scenario
+    case 'multiple'
+        constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
+        constants.Rd = eye(3,3);
+    case 'single'
+        constants.R0 = ROT1(0*pi/180)*ROT3(0*pi/180); % avoid single constraint
+        constants.Rd = ROT3(90*pi/180);
+end
 
-constants.R0 = ROT1(0*pi/180)*ROT3(225*pi/180); % avoid multiple constraints
-constants.Rd = eye(3,3);
+
+
 
 
 R0 = constants.R0;
