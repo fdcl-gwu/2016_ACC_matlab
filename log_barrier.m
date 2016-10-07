@@ -3,6 +3,8 @@ close all
 clc
 clear all
 
+addpath(genpath('./utilities'));
+
 fontsize = 18;
 fontname = 'Times';
 
