@@ -129,4 +129,4 @@ delta_est0 = zeros(3,1);
 initial_state = [constants.R0(:);w0; delta_est0];
 
 % simulation timespan
-tspan = linspace(0,10,1000);
+tspan = linspace(0,20,1000);
