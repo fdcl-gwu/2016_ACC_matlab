@@ -93,7 +93,7 @@ constants.num_con = size(constants.con,2);
 % disturbance terms
 
 constants.W = eye(3,3);
-constants.delta = @(t) 0.2*[sin(2*pi/15*t);cos(2*pi/15*t);sin(2*pi/15*t)];
+constants.delta = @(t) 0.1*[sin(5*pi*t);cos(6*pi*t);sin(9*pi*t)];
 constants.kd = 0.5; % adaptive controller gain term (rate of convergence)
 constants.c = 1; % input the bound on C here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
