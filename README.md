@@ -27,6 +27,6 @@ Run Data_analysis.m to read 20150924_avoid3.txt to generate the experimental res
 The repository holding the experimental data is located at
 https://github.com/skulumani/2016_ACC_Experiment
 
-The commit is 6f5604a9db17ee67b019dac6daa1807e5ed3c6d5
+The commit is 2d4f9be86874f43b4166476fe01f73c216423682
 
 This calls load_experiment_constants and plot_experiment_constants 
