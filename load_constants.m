@@ -4,7 +4,7 @@
 constants.scenario = 'multiple'; % or 'single'
 constants.avoid_switch = 'true';
 constants.dist_switch = 'true';
-constants.adaptive_switch = 'false';
+constants.adaptive_switch = 'true';
 
 % ACC/IJCAS Simulation for Fig 2 is
 % constants.scenario = 'multiple'; % or 'single'
@@ -14,7 +14,7 @@ constants.adaptive_switch = 'false';
 
 
 % constants for plotting/animations
-constants.animation_type = 'gif'; % or 'movie' or 'none'
+constants.animation_type = 'none'; % or 'movie' or 'none'
 constants.filename = 'multiple_avoid';
 
 % define constants/properties of rigid body
