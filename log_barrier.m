@@ -7,6 +7,12 @@ addpath(genpath('./utilities'));
 
 fontsize = 18;
 fontname = 'Times';
+figx = 680;
+figy = 224;
+figw = 800;
+figh = 600;
+
+fig_size = [figx,figy,figw,figh];
 
 con_angle = cos(10*pi/180); % angular constraint
 angle = -1:1e-8:con_angle; % dot product
@@ -68,7 +74,7 @@ end
 
 g = 1+-1/alpha*log(-(angle-con_angle)/(1+con_angle));
 
-figure(1)
+figure('Position',fig_size)
 plot(acos(angle)*180/pi, real(g))
 xlabel('Angle to constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('Barrier','interpreter','latex','FontName',fontname,'FontSize',fontsize)
@@ -76,7 +82,7 @@ title('Logarithmic Barrier Function','interpreter','latex','FontName',fontname,'
 grid on
 hold all
 
-figure
+figure('Position',fig_size)
 hold all
 grid on
 title('Sensor Inertial Pointing Direction','interpreter','latex','FontName',fontname,'FontSize',fontsize)
@@ -87,7 +93,7 @@ xlabel('X','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('Y','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('Z','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 
-figure
+figure('Position',fig_size)
 hold all
 grid on
 title('Avoid','interpreter','latex','FontName',fontname,'FontSize',fontsize)
@@ -97,7 +103,7 @@ surf(X.*180/pi,Y.*180/pi,(psi_avoid_array))
 axis([-180 180 -90 90 0 3])
 view(3)
 
-figure
+figure('Position',fig_size)
 hold all
 grid on
 title('Attract','interpreter','latex','FontName',fontname,'FontSize',fontsize)
@@ -107,7 +113,7 @@ surf(X.*180/pi,Y.*180/pi,psi_attract_array)
 axis([-180 180 -90 90 0 3])
 view(3)
 
-figure
+figure('Position',fig_size)
 hold all
 grid on
 title('Total','interpreter','latex','FontName',fontname,'FontSize',fontsize)
