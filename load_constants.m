@@ -4,7 +4,7 @@
 constants.scenario = 'multiple'; % or 'single'
 constants.avoid_switch = 'true';
 constants.dist_switch = 'true';
-constants.adaptive_switch = 'true';
+constants.adaptive_switch = 'false';
 
 % ACC/IJCAS Simulation for Fig 2 is
 % constants.scenario = 'multiple'; % or 'single'
