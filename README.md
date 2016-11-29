@@ -18,7 +18,7 @@ This is using commit 3c428392a28a19de57c34fbe98816d4e6024d7ff
 run coupled_control_driver.m and then run plot_outputs.m or draw_cad to generate
 the plots. There's a flag in load_constants to create animations or a video
 
-Go to commit 6f5604a9db17ee67b019dac6daa1807e5ed3c6d5 to ensure the constants 
+Go to commit c44b078d2ad42443ac2875aa09a726a987e7af12 to ensure the constants 
 are setup properly
 
 ### Constrained Attitude stabilization experiment:
