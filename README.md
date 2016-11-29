@@ -12,7 +12,7 @@ are setup properly
 run coupled_control_driver.m and then run plot_outputs.m to generate the simulation
 plots used in both ACC/IJCAS submission
 
-This is also using commit a4e97e069d475b1760d61db2d46c1157281afe1c
+This is using commit 3c428392a28a19de57c34fbe98816d4e6024d7ff
 
 ### Attitude Stabilization with adaptive update law:
 run coupled_control_driver.m and then run plot_outputs.m or draw_cad to generate
