@@ -14,7 +14,7 @@ constants.adaptive_switch = 'true';
 
 
 % constants for plotting/animations
-constants.animation_type = 'gif'; % or 'movie' or 'none'
+constants.animation_type = 'none'; % or 'movie' or 'none'
 constants.filename = 'multiple_avoid';
 
 % define constants/properties of rigid body

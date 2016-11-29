@@ -3,12 +3,21 @@
 close all
 num_figs = 8;
 fig_handle = zeros(num_figs,1);
-for ii = 1:num_figs
-    fig_handle(ii) = figure;
-end
 
 fontsize = 18;
 fontname = 'Times';
+figx = 680;
+figy = 224;
+figw = 800;
+figh = 600;
+
+fig_size = [figx,figy,figw,figh];
+
+for ii = 1:num_figs
+    fig_handle(ii) = figure('Position',fig_size);
+end
+
+
 % % plot the position
 % figure
 % 
