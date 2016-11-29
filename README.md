@@ -5,7 +5,7 @@ Matlab code for ACC paper
 ### Configuration Error Function visualization:
 run log_barrier.m to make the surface plots for the \Psi
 
-Go to commit a4e97e069d475b1760d61db2d46c1157281afe1c to make sure the constants
+Go to commit 21e53de0fb288911a5dd5306fddb1f8a9d6d5a8d to make sure the constants
 are setup properly
 
 ### Attitude Stabilization without adaptive update law:
