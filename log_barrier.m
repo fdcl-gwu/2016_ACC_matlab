@@ -73,6 +73,7 @@ end
 
 
 g = 1+-1/alpha*log(-(angle-con_angle)/(1+con_angle));
+eRB = abs(1/alpha*sin(acos(angle))./(angle-con_angle)); % norm of eRB
 
 figure('Position',fig_size)
 plot(acos(angle)*180/pi, real(g))
@@ -81,6 +82,7 @@ ylabel('Barrier','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 title('Logarithmic Barrier Function','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 grid on
 hold all
+plot(acos(angle)*180/pi,eRB)
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 figure('Position',fig_size)
