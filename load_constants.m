@@ -1,7 +1,7 @@
 % 22 September 2015
 % load constants for simulation
 
-constants.scenario = 'multiple'; % or 'single'
+constants.scenario = 'single'; % or 'single'
 constants.avoid_switch = 'true';
 constants.dist_switch = 'true';
 constants.adaptive_switch = 'true';
@@ -93,7 +93,7 @@ constants.num_con = size(constants.con,2);
 % disturbance terms
 
 constants.W = eye(3,3);
-constants.delta = [0.2;0.2;0.2];
+constants.delta = @(t) 0.2 + 0.02*[sin(9*t);cos(9*t);1/2*(sin(9*t)+cos(9*t))];
 constants.kd = 0.5; % adaptive controller gain term (rate of convergence)
 constants.c = 1; % input the bound on C here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -129,4 +129,4 @@ delta_est0 = zeros(3,1);
 initial_state = [constants.R0(:);w0; delta_est0];
 
 % simulation timespan
-tspan = linspace(0,10,1000);
+tspan = linspace(0,20,1000);

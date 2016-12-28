@@ -21,6 +21,11 @@ the plots. There's a flag in load_constants to create animations or a video
 Go to commit c44b078d2ad42443ac2875aa09a726a987e7af12 to ensure the constants 
 are setup properly
 
+### Time varying disturbance simulation
+Go to commit `488f15b0ffab397877bb8aead46719811f5ea73b` and run coupled_control_driver.m
+
+This will generate a bunch of plots for the time varying disturbance case. 
+
 ### Constrained Attitude stabilization experiment:
 Run Data_analysis.m to read 20150924_avoid3.txt to generate the experimental results
 

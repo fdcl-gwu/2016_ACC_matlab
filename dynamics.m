@@ -51,7 +51,7 @@ f = zeros(3,1);
 % m = 3*mu/norm(pos)^3 * cross(R_body2lvlh'*a1_hat,J*R_body2lvlh'*a1_hat);
 switch constants.dist_switch
     case 'true'
-        m = zeros(3,1) + W*delta;
+        m = zeros(3,1) + W*delta(t);
     case 'false'
         m = zeros(3,1);
 end
