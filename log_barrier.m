@@ -15,7 +15,7 @@ figh = 600;
 fig_size = [figx,figy,figw,figh];
 
 con_angle = cos(10*pi/180); % angular constraint
-angle = -1:1e-8:con_angle; % dot product
+angle = -1:1e-2:con_angle; % dot product
 x = 0:0.001:1;
 alpha = 20;
 
