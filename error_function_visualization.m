@@ -139,7 +139,7 @@ function A_out = A(phi,G,x,C)
         jj = C(hh,2);
         kk = C(hh,3);
         
-        summation = summation + (G(ii,ii)+G(jj,jj))*x(kk)^2;
+        summation = summation + (G(ii,ii)+G(jj,jj))*phi^2*x(kk)^2;
     end
     
     A_out = (1-cos(phi))/(2*phi^2)*summation;
@@ -155,17 +155,17 @@ function eRA_out = eRA(phi,G,x,C)
         jj = C(hh,2);
         kk = C(hh,3);
         
-        summation_1 = summation_1 + (G(ii,ii)-G(jj,jj))^2*x(ii)^2*x(jj)^2;
-        summation_2 = summation_2 + (G(ii,ii)+G(jj,jj))^2*x(kk)^2;
+        summation_1 = summation_1 + (G(ii,ii)-G(jj,jj))^2*x(ii)^2*x(jj)^2*phi^4;
+        summation_2 = summation_2 + (G(ii,ii)+G(jj,jj))^2*x(kk)^2*phi^2;
     end
     
     eRA_out = (1-cos(phi))^2/(4*phi^4)*summation_1 + (sin(phi))^2/(4*phi^2)*summation_2;
 end
 
-function B_out = B(alpha,ksi,theta)
-    B_out = 1 - 1/alpha * log((cos(theta)-ksi)/(1+cos(theta)));
+function B_out = B(alpha,xi,theta)
+    B_out = 1 - 1/alpha * log((cos(theta)-cos(xi))/(1+cos(theta)));
 end
 
 function eRB_out = eRB(alpha,ksi,theta)
-    eRB_out = 1/alpha*1/abs(ksi-cos(theta))*sin(ksi)
+    eRB_out = 1/alpha*1/abs(cos(ksi)-cos(theta))*sin(ksi);
 end
