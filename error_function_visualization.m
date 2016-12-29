@@ -35,7 +35,7 @@ C = [1,2,3;
 
 
 % create surface plot of \Psi = A B and e_{R}
-density = 50;
+density = 100;
 angle2con = linspace(pi,con_angle,density); % dot product - ksi
 angle2des = linspace(0,2*pi,density); % angle to desired attitude - phi
 [phi, xi] = meshgrid(angle2des, angle2con);
