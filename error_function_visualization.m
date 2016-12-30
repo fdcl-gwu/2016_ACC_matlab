@@ -28,6 +28,13 @@ con = con/norm(con);
 R_des = eye(3,3);
 G = diag([0.9 1 1.1]);
 
+% calculate h1, h2, h3, b1
+h1 = min([G(1,1)+G(2,2),G(2,2)+G(3,3),G(3,3)+G(1,1)]);
+h2 = min([(G(1,1)-G(2,2))^2,(G(2,2)-G(3,3))^2,(G(3,3)-G(1,1))^2]);
+h3 = min([(G(1,1)+G(2,2))^2,(G(2,2)+G(3,3))^2,(G(3,3)+G(1,1))^2]);
+
+b1 = h1/(h2+h3);
+
 % functions for config error terms
 C = [1,2,3;
     2,3,1;
@@ -35,7 +42,7 @@ C = [1,2,3;
 
 
 % create surface plot of \Psi = A B and e_{R}
-density = 100;
+density = 1000;
 angle2con = linspace(pi,con_angle,density); % dot product - ksi
 angle2des = linspace(0,2*pi,density); % angle to desired attitude - phi
 [phi, xi] = meshgrid(angle2des, angle2con);
@@ -57,54 +64,58 @@ for ii = 1:length(angle2con)% loop over angle between R^T v and r
     end
 end
 
+% compute error functions
+Psi_array = A_array.*B_array;
+eR_array = A_array.*eRB_array+B_array.*eRA_array;
+
 % create surface
-figure('Position',fig_size)
-hold all
-grid on
-title('$A(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-zlabel('$A(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,A_array)
-axis([0 360 0 180 0 3])
-view(3)
-set(gca,'FontName',fontname,'FontSize',fontsize);
-
-figure('Position',fig_size)
-hold all
-grid on
-title('$B(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-zlabel('$B(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,B_array)
-axis([0 360 0 180 0 3])
-view(3)
-set(gca,'FontName',fontname,'FontSize',fontsize);
-
-figure('Position',fig_size)
-hold all
-grid on
-title('$e_{R_A}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-zlabel('$e_{R_A}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,eRA_array)
-axis([0 360 0 180 0 3])
-view(3)
-set(gca,'FontName',fontname,'FontSize',fontsize);
-
-figure('Position',fig_size)
-hold all
-grid on
-title('$e_{R_B}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-zlabel('$e_{R_B}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,eRB_array)
-axis([0 360 0 180 0 3])
-view(3)
-set(gca,'FontName',fontname,'FontSize',fontsize);
+% figure('Position',fig_size)
+% hold all
+% grid on
+% title('$A(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% zlabel('$A(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% surf(phi.*180/pi,xi.*180/pi,A_array)
+% axis([0 360 0 180 0 3])
+% view(3)
+% set(gca,'FontName',fontname,'FontSize',fontsize);
+% 
+% figure('Position',fig_size)
+% hold all
+% grid on
+% title('$B(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% zlabel('$B(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% surf(phi.*180/pi,xi.*180/pi,B_array)
+% axis([0 360 0 180 0 3])
+% view(3)
+% set(gca,'FontName',fontname,'FontSize',fontsize);
+% 
+% figure('Position',fig_size)
+% hold all
+% grid on
+% title('$e_{R_A}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% zlabel('$e_{R_A}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% surf(phi.*180/pi,xi.*180/pi,eRA_array)
+% axis([0 360 0 180 0 3])
+% view(3)
+% set(gca,'FontName',fontname,'FontSize',fontsize);
+% 
+% figure('Position',fig_size)
+% hold all
+% grid on
+% title('$e_{R_B}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% zlabel('$e_{R_B}$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+% surf(phi.*180/pi,xi.*180/pi,eRB_array)
+% axis([0 360 0 180 0 3])
+% view(3)
+% set(gca,'FontName',fontname,'FontSize',fontsize);
 
 figure('Position',fig_size)
 hold all
@@ -113,8 +124,9 @@ title('$\Psi = A(R) B(R)$','interpreter','latex','FontName',fontname,'FontSize',
 xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('$\Psi$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,A_array.*B_array)
+surf(phi.*180/pi,xi.*180/pi,Psi_array,'EdgeColor','none')
 axis([0 360 0 180 0 3])
+caxis([0 2])
 view(3)
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
@@ -125,11 +137,37 @@ title('$e_R = A(R) e_{R_B} + B(R) e_{R_A}$','interpreter','latex','FontName',fon
 xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('$e_R$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(phi.*180/pi,xi.*180/pi,A_array.*eRB_array+B_array.*eRA_array)
+surf(phi.*180/pi,xi.*180/pi,eR_array,'EdgeColor','none')
 axis([0 360 0 180 0 3])
+caxis([0 2])
 view(3)
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
+figure('Position',fig_size)
+hold all
+grid on
+title('$0 \leq \Psi - b_1 \left| e_R \right|^2$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+zlabel('Value','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+surf(phi.*180/pi,xi.*180/pi,Psi_array-b1*eR_array,'EdgeColor','none')
+axis([0 360 0 180 0 3])
+caxis([0 2])
+view(3)
+set(gca,'FontName',fontname,'FontSize',fontsize);
+
+figure('Position',fig_size)
+hold all
+grid on
+title('$0 \leq A - b_1 \left| e_{R_A} \right|^2$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+xlabel('$\phi$ Desired','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+ylabel('$\xi$ Constraint','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+zlabel('Value','interpreter','latex','FontName',fontname,'FontSize',fontsize)
+surf(phi.*180/pi,xi.*180/pi,A_array-b1*eRA_array,'EdgeColor','none')
+axis([0 360 0 180 0 3])
+caxis([0 2])
+view(3)
+set(gca,'FontName',fontname,'FontSize',fontsize);
 function A_out = A(phi,G,x,C)
 
     % loop over the set C
