@@ -26,7 +26,7 @@ con = con/norm(con);
 R_des = eye(3,3);
 G = diag([0.9 1 1.1]);
 % cylindrical projection of attitude ROT3(lon)*ROT2(lat)
-den = 50;
+den = 100;
 lon = linspace(-180,180,den)*pi/180;
 lat = linspace(-90, 90, den)*pi/180;
 
@@ -104,10 +104,12 @@ title('Avoid','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('$B(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(X.*180/pi,Y.*180/pi,(psi_avoid_array))
+surf(X.*180/pi,Y.*180/pi,(psi_avoid_array),'EdgeColor','none')
+caxis([1 2])
 axis([-180 180 -90 90 0 3])
 view(3)
 set(gca,'FontName',fontname,'FontSize',fontsize);
+
 
 figure('Position',fig_size)
 hold all
@@ -116,10 +118,12 @@ title('Attract','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('$A(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(X.*180/pi,Y.*180/pi,psi_attract_array)
+surf(X.*180/pi,Y.*180/pi,psi_attract_array,'EdgeColor','none')
+caxis([0 2])
 axis([-180 180 -90 90 0 3])
 view(3)
 set(gca,'FontName',fontname,'FontSize',fontsize);
+
 
 figure('Position',fig_size)
 hold all
@@ -128,7 +132,8 @@ title('Total','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 xlabel('Longitude ($\lambda$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 ylabel('Latitude ($\beta$)','interpreter','latex','FontName',fontname,'FontSize',fontsize)
 zlabel('$\Psi(R)$','interpreter','latex','FontName',fontname,'FontSize',fontsize)
-surf(X.*180/pi,Y.*180/pi,psi_total_array)
+surf(X.*180/pi,Y.*180/pi,psi_total_array,'EdgeColor','none')
+caxis([0 2])
 axis([-180 180 -90 90 0 3])
 view(3)
 set(gca,'FontName',fontname,'FontSize',fontsize);
